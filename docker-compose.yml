@@ -12,7 +12,7 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - ${MEDIA_DIR}/config/qbittorrent:/config
+      - ${CONFIG_DIR}/qbittorrent:/config
       - ${MEDIA_DIR}/Downloads:/downloads
       - ${MEDIA_DIR}/Movies:/movies
       - ${MEDIA_DIR}/Shows:/tv
@@ -48,7 +48,7 @@ services:
       - PGID=1000
       - TZ=${TIMEZONE}
     volumes:
-      - ${MEDIA_DIR}/config/prowlarr:/config
+      - ${CONFIG_DIR}/prowlarr:/config
     ports:
       - 9696:9696
     healthcheck:
@@ -66,7 +66,7 @@ services:
       - PGID=1000
       - TZ=${TIMEZONE}
     volumes:
-      - ${MEDIA_DIR}/config/radarr:/config
+      - ${CONFIG_DIR}/radarr:/config
       - ${MEDIA_DIR}/Movies:/movies
       - ${MEDIA_DIR}/Downloads:/downloads
     ports:
@@ -86,7 +86,7 @@ services:
       - PGID=1000
       - TZ=${TIMEZONE}
     volumes:
-      - ${MEDIA_DIR}/config/lidarr:/config
+      - ${CONFIG_DIR}/lidarr:/config
       - ${MEDIA_DIR}/Music:/music
       - ${MEDIA_DIR}/Downloads:/downloads
     ports:
@@ -107,7 +107,7 @@ services:
     ports:
       - ${SEERR_BIND_ADDRESS}:5055:5055
     volumes:
-      - ${MEDIA_DIR}/config/seerr:/app/config
+      - ${CONFIG_DIR}/seerr:/app/config
     healthcheck:
       test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1"]
       start_period: 20s
