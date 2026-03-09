@@ -51,6 +51,9 @@ services:
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     environment:
       - PUID=1000
       - PGID=1000
