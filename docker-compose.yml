@@ -9,7 +9,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=${TIMEZONE}
-      - WEBUI_PORT=8080
+      - WEBUI_PORT=8090
       - TORRENTING_PORT=6881
     volumes:
       - ${CONFIG_DIR}/qbittorrent:/config
@@ -17,7 +17,7 @@ services:
       - ${MEDIA_DIR}/Movies:/movies
       - ${MEDIA_DIR}/Shows:/tv
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8090 || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -37,7 +37,7 @@ services:
       - SERVER_COUNTRIES=France
       - TZ=${TIMEZONE}
     ports:
-      - 8080:8080
+      - 8090:8090
     restart: unless-stopped
 
   prowlarr:
