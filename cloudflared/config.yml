@@ -2,7 +2,7 @@ tunnel: REPLACE_WITH_YOUR_TUNNEL_UUID
 credentials-file: /Users/homelab/.cloudflared/REPLACE_WITH_YOUR_TUNNEL_UUID.json
 
 ingress:
-  - hostname: jellyfin.mydomain.com
+  - hostname: jellyfin.mynkie.com
     service: http://127.0.0.1:80
 
     # add future sub-domains here
