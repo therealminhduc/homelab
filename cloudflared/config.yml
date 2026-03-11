@@ -1,5 +1,5 @@
 tunnel: 25cf4712-ce33-4bca-801f-171b01d02bb2
-credentials-file: /Users/homelab/.cloudflared/REPLACE_WITH_YOUR_TUNNEL_UUID.json
+credentials-file: /Users/homelab/.cloudflared/25cf4712-ce33-4bca-801f-171b01d02bb2.json
 
 ingress:
   - hostname: jellyfin.mynkie.com
