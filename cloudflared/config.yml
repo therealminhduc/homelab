@@ -3,7 +3,7 @@ credentials-file: /Users/homelab/.cloudflared/25cf4712-ce33-4bca-801f-171b01d02b
 
 ingress:
   - hostname: jellyfin.mynkie.com
-    service: http://127.0.0.1:80
+    service: http://127.0.0.1:8080
 
     # add future sub-domains here
 
