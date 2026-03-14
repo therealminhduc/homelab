@@ -5,7 +5,7 @@ ingress:
   - hostname: jellyfin.mynkie.com
     service: http://127.0.0.1:8080
   - hostname: mynkie.com
-    service: http://127.0.0.1:8081
+    service: http://127.0.0.1:8080
     # add future sub-domains here
 
   - service: http_status:404
