@@ -1,11 +1,10 @@
 tunnel: 25cf4712-ce33-4bca-801f-171b01d02bb2
-credentials-file: /Users/homelab/.cloudflared/25cf4712-ce33-4bca-801f-171b01d02bb2.json
+credentials-file: /etc/cloudflared/credentials.json
 
 ingress:
   - hostname: jellyfin.mynkie.com
-    service: http://127.0.0.1:8080
+    service: http://nginx:8080
   - hostname: mynkie.com
-    service: http://127.0.0.1:8080
-    # add future sub-domains here
+    service: http://nginx:8080
 
   - service: http_status:404
