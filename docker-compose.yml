@@ -154,8 +154,20 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/servers:/etc/nginx/conf.d:ro
-      - ./mynkie/public:/usr/share/nginx/html/mynkie:ro
     restart: unless-stopped
+
+  mynkie:
+    image: ghcr.io/therealminhduc/mynkie:latest
+    container_name: mynkie
+    restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300 mynkie
 
   cloudflared:
     image: cloudflare/cloudflared:latest
