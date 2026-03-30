@@ -6,5 +6,7 @@ ingress:
     service: http://nginx:8080
   - hostname: mynkie.com
     service: http://nginx:8080
+  - hostname: docs.mynkie.com
+    service: http://nginx:8080
 
   - service: http_status:404
