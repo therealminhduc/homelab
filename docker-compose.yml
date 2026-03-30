@@ -144,6 +144,66 @@ services:
       retries: 3
     restart: unless-stopped
 
+  paperless-redis:
+    image: redis:7-alpine
+    container_name: paperless-redis
+    volumes:
+      - ${CONFIG_DIR}/paperless/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  paperless-db:
+    image: postgres:16-alpine
+    container_name: paperless-db
+    environment:
+      - POSTGRES_DB=paperless
+      - POSTGRES_USER=paperless
+      - POSTGRES_PASSWORD=${PAPERLESS_DB_PASSWORD}
+    volumes:
+      - ${CONFIG_DIR}/paperless/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paperless"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  paperless:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless
+    depends_on:
+      paperless-db:
+        condition: service_healthy
+      paperless-redis:
+        condition: service_healthy
+    environment:
+      - PAPERLESS_REDIS=redis://paperless-redis:6379
+      - PAPERLESS_DBHOST=paperless-db
+      - PAPERLESS_DBNAME=paperless
+      - PAPERLESS_DBUSER=paperless
+      - PAPERLESS_DBPASS=${PAPERLESS_DB_PASSWORD}
+      - PAPERLESS_URL=https://paperless.mynkie.com
+      - PAPERLESS_SECRET_KEY=${PAPERLESS_SECRET_KEY}
+      - PAPERLESS_TIME_ZONE=${TIMEZONE}
+      - PAPERLESS_OCR_LANGUAGE=eng
+      - USERMAP_UID=1000
+      - USERMAP_GID=1000
+    volumes:
+      - ${CONFIG_DIR}/paperless/data:/usr/src/paperless/data
+      - ${CONFIG_DIR}/paperless/media:/usr/src/paperless/media
+      - ${PAPERLESS_CONSUME_DIR}:/usr/src/paperless/consume
+      - ${PAPERLESS_EXPORT_DIR}:/usr/src/paperless/export
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
   nginx:
     image: nginx:alpine
     container_name: nginx
