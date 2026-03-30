@@ -96,8 +96,8 @@ services:
       - USERMAP_UID=1000
       - USERMAP_GID=1000
     volumes:
-      - ${DOCS_DIR}/paperless/data:/usr/src/paperless/data
-      - ${DOCS_DIR}/paperless/media:/usr/src/paperless/media
+      - ${DOCS_DIR}/store/data:/usr/src/paperless/data
+      - ${DOCS_DIR}/store/media:/usr/src/paperless/media
       - ${PAPERLESS_CONSUME_DIR}:/usr/src/paperless/consume
       - ${PAPERLESS_EXPORT_DIR}:/usr/src/paperless/export
     healthcheck:
