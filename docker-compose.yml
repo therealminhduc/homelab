@@ -186,7 +186,7 @@ services:
       - PAPERLESS_DBNAME=paperless
       - PAPERLESS_DBUSER=paperless
       - PAPERLESS_DBPASS=${PAPERLESS_DB_PASSWORD}
-      - PAPERLESS_URL=https://paperless.mynkie.com
+      - PAPERLESS_URL=https://docs.mynkie.com
       - PAPERLESS_SECRET_KEY=${PAPERLESS_SECRET_KEY}
       - PAPERLESS_TIME_ZONE=${TIMEZONE}
       - PAPERLESS_OCR_LANGUAGE=eng
