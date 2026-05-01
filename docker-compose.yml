@@ -132,7 +132,7 @@ services:
         mkdir -p /site/releases/latest
         rm -rf /site/releases/latest/*
         cp -a /usr/share/nginx/html/. /site/releases/latest/
-        ln -sfn releases/latest /site/current
+        ln -sfn /site/releases/latest /site/current
 
   watchtower:
     image: containrrr/watchtower
