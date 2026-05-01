@@ -120,3 +120,15 @@ docker compose logs qbittorrent
 - Update images and restart: `docker compose pull && docker compose up -d`
 
 Data lives in `MEDIA_DIR`; removing containers with `docker compose down` does not delete your config or media.
+
+## Personal site deploys
+
+`mynkie.com` is served directly by the homelab nginx container from `MYNKIE_SITE_DIR/current`. The `mynkie-site` container is a one-shot publisher: it copies `/usr/share/nginx/html` out of the latest `ghcr.io/therealminhduc/mynkie:latest` image into a timestamped release directory, then points `current` at that release.
+
+Watchtower watches `mynkie-site` with `--include-stopped --revive-stopped`, so pushing a new blog image publishes static files without restarting nginx. For a manual deploy, run:
+
+```bash
+./scripts/deploy.sh
+```
+
+If `mynkie.com` or `docs.mynkie.com` returns Cloudflare `404` while `jellyfin.mynkie.com` works, make sure the Cloudflare Tunnel has public hostnames for all three names and restart `cloudflared` so it reloads `cloudflared/config.yml`.

@@ -117,12 +117,23 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/servers:/etc/nginx/conf.d:ro
+      - ${MYNKIE_SITE_DIR:-./data/mynkie-site}:/var/www/mynkie:ro
     restart: unless-stopped
 
-  mynkie:
+  mynkie-site:
     image: ghcr.io/therealminhduc/mynkie:latest
-    container_name: mynkie
-    restart: unless-stopped
+    container_name: mynkie-site
+    restart: "no"
+    volumes:
+      - ${MYNKIE_SITE_DIR:-./data/mynkie-site}:/site
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        release_id="$$(date -u +%Y%m%d%H%M%S)"
+        release_dir="/site/releases/$$release_id"
+        mkdir -p "$$release_dir"
+        cp -a /usr/share/nginx/html/. "$$release_dir/"
+        ln -sfn "releases/$$release_id" /site/current
 
   watchtower:
     image: containrrr/watchtower
@@ -130,7 +141,7 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 300 mynkie
+    command: --interval 300 --include-stopped --revive-stopped mynkie-site
 
   cloudflared:
     image: cloudflare/cloudflared:latest
