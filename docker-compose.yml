@@ -129,11 +129,10 @@ services:
     entrypoint: ["/bin/sh", "-ec"]
     command:
       - |
-        release_id="$$(date -u +%Y%m%d%H%M%S)"
-        release_dir="/site/releases/$$release_id"
-        mkdir -p "$$release_dir"
-        cp -a /usr/share/nginx/html/. "$$release_dir/"
-        ln -sfn "releases/$$release_id" /site/current
+        mkdir -p /site/releases/latest
+        rm -rf /site/releases/latest/*
+        cp -a /usr/share/nginx/html/. /site/releases/latest/
+        ln -sfn releases/latest /site/current
 
   watchtower:
     image: containrrr/watchtower
