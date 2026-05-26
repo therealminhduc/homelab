@@ -132,3 +132,20 @@ Watchtower watches `mynkie-site` with `--include-stopped --revive-stopped`, so p
 ```
 
 If `mynkie.com` or `docs.mynkie.com` returns Cloudflare `404` while `jellyfin.mynkie.com` works, make sure the Cloudflare Tunnel has public hostnames for all three names and restart `cloudflared` so it reloads `cloudflared/config.yml`.
+
+## Reliability hardening for `mynkie.com` / `docs.mynkie.com`
+
+The compose stack is configured to reduce long-running tunnel drift:
+
+- `cloudflared` runs with `--no-autoupdate` so it does not self-restart into a different binary after running for a while.
+- `nginx` has an HTTP healthcheck with explicit `Host` headers for both `mynkie.com` and `docs.mynkie.com`.
+- `cloudflared` waits for healthy `nginx` before starting.
+
+Quick checks when investigating a `404` event:
+
+```bash
+docker compose ps
+docker compose logs --tail=200 cloudflared nginx
+docker compose exec -T nginx wget -qO- --header='Host: mynkie.com' http://127.0.0.1:8080/ >/dev/null && echo "mynkie ok"
+docker compose exec -T nginx wget -qO- --header='Host: docs.mynkie.com' http://127.0.0.1:8080/ >/dev/null && echo "docs ok"
+```
