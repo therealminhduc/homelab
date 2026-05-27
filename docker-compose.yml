@@ -122,7 +122,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "wget -qO- --header='Host: mynkie.com' http://127.0.0.1:8080/ >/dev/null && wget -qO- --header='Host: docs.mynkie.com' http://127.0.0.1:8080/ >/dev/null",
+          "wget -qO- http://127.0.0.1:8080/nginx-health >/dev/null",
         ]
       interval: 30s
       timeout: 10s
