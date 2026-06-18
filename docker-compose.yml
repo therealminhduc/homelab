@@ -110,6 +110,9 @@ services:
   nginx:
     image: nginx:alpine
     container_name: nginx
+    depends_on:
+      paperless:
+        condition: service_healthy
     ports:
       - "127.0.0.1:8080:8080"
     extra_hosts:
@@ -122,7 +125,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "wget -qO- http://127.0.0.1:8080/nginx-health >/dev/null",
+          "wget -qO- --header='Host: mynkie.com' http://127.0.0.1:8080/ >/dev/null && wget -qO- --header='Host: docs.mynkie.com' http://127.0.0.1:8080/ >/dev/null",
         ]
       interval: 30s
       timeout: 10s
